@@ -1,4 +1,11 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+try{
+	$db = new PDO('mysql:host=localhost; dbname=eniac2; charset=utf8', 'root','', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+}catch(Exception $e){
+	die('Error: '.$e->getMessage());
+}
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<?php include("menu.php"); ?>
+<?php include("menu.php"); ?>
 	<h2>Inscription</h2>
 	<section>
 		<form method="post" action="inscrire.php" id="inscrire-form">
@@ -60,18 +67,12 @@
 
 			</form>
 	</section>
-
-	<?php include("footer.php"); ?>
+<?php include("footer.php"); ?>
 
 	<!-- Traitement des donnees et leurs envoie dans la base de donnees -->
 
-	<?php
+<?php
 	$inscrit=false; 
-	try{
-		$db = new PDO('mysql:host=localhost; dbname=eniac2; charset=utf8', 'root','', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-	}catch(Exception $e){
-		die('Error: '.$e->getMessage());
-	}
 	if(isset($_POST['nom']) AND isset($_POST['prenom']) AND isset($_POST['email']) AND isset($_POST['naissance']) AND isset($_POST['password']) AND isset($_POST['confirme_pass']) AND isset($_POST['filiere'])){
 		$_POST['email']=htmlspecialchars($_POST['email']);
 		if(!preg_match('#^[a-z0-9._-]{1,30}@{1}[a-z0-9._-]{2,}\.[a-z]{2,4}$#',$_POST['email']))
@@ -79,7 +80,7 @@
 				<script type="text/javascript">
 					alert("L'adresse email est incorrecte");
 				</script>
-			<?php
+<?php
 		}
 		$nom = htmlspecialchars($_POST['nom']);
 		$prenom = htmlspecialchars($_POST['prenom']);
@@ -101,16 +102,14 @@
 				<script type="text/javascript">
 					var email_existe = '<?= $mail ?>';
 					alert('L\'email '+ email_existe +' est déjà inscrit sur PDF-download !');
-				</script>
-			<?php
+				</script><?php
 		}
 		else{
 			if($password != $confirme_pass){
 			?>
 			<script type="text/javascript">
 				alert("Les mots de passe ne correspondent pas");
-			</script>
-			<?php 
+			</script><?php
 		}
 
 		$clef = "0123456789";
@@ -130,11 +129,20 @@
 			));
 		$reponse->closecursor();
 		$inscrit=true;
-		$my_mail = "eniac5@project.com";
-		$subject = "Validation de l'inscription" ;
-		$message = "Salamou aleykoum ".$prenom ." ".$nom. "pour finir votre inscription sur PDF-download veuillez cliquer sur le lien ci-dessous, cela nous permettra de verifier qu'il s'agit bien de vous\n<a href='http://127.0.0.1/MyProjet/ENIAC/pdf-download/inscrire.php?clef=$clef'>valider mon compte</a>" ;
-		$head = "De:".$my_mail ; 
-		mail($mail, $subject, $message,$head);
+		if ($inscrit) {
+			?>
+			<script type="text/javascript">
+				alert("Votre inscription a bien été validée.\nVous pouvez vous connecter et acceder à votre compte.");
+				window.location.href = "connexion.php";
+			</script>
+			<?php
+		}
+		// header('Location: connexion.php');
+		// $my_mail = "eniac5@project.com";
+		// $subject = "Validation de l'inscription" ;
+		// $message = "Salamou aleykoum ".$prenom ." ".$nom. "pour finir votre inscription sur PDF-download veuillez cliquer sur le lien ci-dessous, cela nous permettra de verifier qu'il s'agit bien de vous\n<a href='http://127.0.0.1/MyProjet/ENIAC/pdf-download/inscrire.php?clef=$clef'>valider mon compte</a>" ;
+		// $head = "De:".$my_mail ; 
+		// mail($mail, $subject, $message,$head);
 	}
 	}
 	if($inscrit){
@@ -142,11 +150,11 @@
 			<script type="text/javascript">
 				alert("Votre inscription a bien été validé\nvous allez recevoir un email permetent de confirmer votre identité");
 			</script>
-		<?php 
+		<?php
 	}
 		}
 		
- ?>
+?>
 
 
 </body>
