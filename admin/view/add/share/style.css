@@ -1,0 +1,86 @@
+section#sec-partage{
+	height: 100%;
+}
+section#sec-partage div{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+section#sec-partage div form{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items:center;
+}
+input[type="submit"]{
+	padding:10px;
+	margin-top:5px;
+	color:white;
+	background: #39D2B4;
+	border:1px solid rgb(250,250,240);
+}
+input[type="submit"]:hover{
+	background: #34495E;
+	color:#39D2B4;
+}
+/*Code de style appliquer à input file*/
+
+/*style de barre si JS est activé*/
+
+.js .input-file-contrainer{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.js .input-file-trigger{
+	display: block;
+	padding:14px 45px;
+	background:#39D2B4;
+	color:#fff;
+	font-size:1em;
+	transition: all .4s
+	cursor:pointer;
+	width: 250px;
+}
+.js .input-file{
+	/*
+	position: absolute;
+	
+	width: 225px;
+	padding:14px 0;
+	*/
+	opacity: 0;
+	cursor: pointer;
+}
+/* quelque style d'interaction */
+.js .input-file:hover + .input-file-trigger,
+.js .input-file:focus + .input-file-trigger,
+.js .input-file-trigger:hover,
+.js .input-file-trigger:focus{
+	background: #34495E;
+	color:#39D2B4;
+}
+
+/*style du retour visuel*/
+.file-return{
+	margin:0;
+}
+.file-return{
+	margin:0;
+}
+.file-return:not(:empty){
+	margin:1em 0;
+}
+.js .file-return{
+	font-size: .9em;
+	font-style:italic;
+	font-weight: bold;
+}
+/*on complète l'information d'un contenu textuel uniquement lorsque le paragraphe n'est pas vide*/
+.js .file-return:not(:empty):before{
+	content: "Selected file: ";
+	font-style:normal;
+	font-weight: normal;
+}
+
+/* fin du code de style de <input type="file"> */
